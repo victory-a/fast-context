@@ -1,62 +1,63 @@
-import React, { useState, createContext, useContext, memo } from "react";
-
+import React, { useState } from 'react';
 function useStoreData() {
   const store = useState({
-    first: "",
-    last: "",
+    first: '',
+    last: '',
   });
+
   return store;
 }
 
 type UseStoreDataReturnType = ReturnType<typeof useStoreData>;
 
-const StoreContext = createContext<UseStoreDataReturnType | null>(null);
+const StoreContext = React.createContext<UseStoreDataReturnType | null>(null);
+const TextInput = ({ value }: { value: 'first' | 'last' }) => {
+  const [store, setStore] = React.useContext(StoreContext)!;
 
-const TextInput = ({ value }: { value: "first" | "last" }) => {
-  const [store, setStore] = useContext(StoreContext)!;
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    return setStore({ ...store, [value]: e.target.value });
+  }
+
   return (
-    <div className="field">
-      {value}:{" "}
-      <input
-        value={store[value]}
-        onChange={(e) => setStore({ ...store, [value]: e.target.value })}
-      />
+    <div className='field'>
+      {value}: <input value={store[value]} onChange={handleChange} />
     </div>
   );
 };
 
-const Display = ({ value }: { value: "first" | "last" }) => {
-  const [store] = useContext(StoreContext)!;
+const Display = ({ value }: { value: 'first' | 'last' }) => {
+  const [store] = React.useContext(StoreContext)!;
+
   return (
-    <div className="value">
+    <div className='value'>
       {value}: {store[value]}
     </div>
   );
 };
 
-const FormContainer = memo(() => {
+const FormContainer = React.memo(() => {
   return (
-    <div className="container">
+    <div className='container'>
       <h5>FormContainer</h5>
-      <TextInput value="first" />
-      <TextInput value="last" />
+      <TextInput value='first' />
+      <TextInput value='last' />
     </div>
   );
 });
 
-const DisplayContainer = memo(() => {
+const DisplayContainer = React.memo(() => {
   return (
-    <div className="container">
+    <div className='container'>
       <h5>DisplayContainer</h5>
-      <Display value="first" />
-      <Display value="last" />
+      <Display value='first' />
+      <Display value='last' />
     </div>
   );
 });
 
-const ContentContainer = memo(() => {
+const ContentContainer = React.memo(() => {
   return (
-    <div className="container">
+    <div className='container'>
       <h5>ContentContainer</h5>
       <FormContainer />
       <DisplayContainer />
@@ -66,13 +67,13 @@ const ContentContainer = memo(() => {
 
 function App() {
   const store = useState({
-    first: "",
-    last: "",
+    first: '',
+    last: '',
   });
 
   return (
     <StoreContext.Provider value={store}>
-      <div className="container">
+      <div className='container'>
         <h5>App</h5>
         <ContentContainer />
       </div>

@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src", "../fast-context-generic/src/createfastContext.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
